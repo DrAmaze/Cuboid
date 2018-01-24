@@ -23,7 +23,27 @@ describe Cuboid do
     it "changes the origin in the simple happy case" do
       expect(subject.move_to!(1,2,3)).to eq([1, 2, 3])
     end
-  end  
+  end
+
+  describe "#vertices" do
+    it "returns an array of eight vertices" do
+      expect(subject.vertices.length).to be 8
+    end
+
+    it "calculates the vertices based on the origin" do
+      subject_vertices = subject.vertices
+      other_subject_vertices = other_subject.vertices
+
+      expect(subject_vertices).to_not eq(other_subject_vertices)
+    end
+
+    it "updates the vertices when the origin is relocated" do
+      vertices = subject.vertices
+      subject.move_to!(8, 8, 8)
+      new_vertices = subject.vertices
+      expect(vertices).to_not eq(new_vertices)
+    end
+  end
 
   describe "intersects?" do
   end
