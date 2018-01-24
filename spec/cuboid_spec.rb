@@ -45,7 +45,21 @@ describe Cuboid do
     end
   end
 
-  describe "intersects?" do
+  describe "#intersects?" do
+    it "returns false if two cuboids do not intersect each other" do
+      cube = Cuboid.new([10, 10, 10], 1, 2, 3)
+      expect(subject.intersects?(cube)).to be false
+    end
+
+    it "returns true if one cuboid is inside another" do
+      cube = Cuboid.new([1, 1, 1], 0.5, 0.5, 0.5)
+      expect(subject.intersects?(cube)).to be true
+    end
+
+    it "returns true if two cuboids share a single point" do
+      cube = Cuboid.new([3, 3, 3], 1, 1, 1)
+      expect(subject.intersects?(cube)).to be true
+    end
   end
 
 end
