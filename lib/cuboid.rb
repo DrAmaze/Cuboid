@@ -24,10 +24,26 @@ class Cuboid
 
   #BEGIN public methods that should be your starting point
 
+  # Reassigns origin of cuboid. Returns new origin.
   def move_to!(x, y, z)
+    @origin = [x, y, z]
   end
 
+  # calculates and returns an array of the eight vertices
+  # Each vertex is given as (x, y, z)
   def vertices
+    vertices = []
+
+    vertices << [(@origin[0] + @l/2.0), (@origin[1] + @h/2.0), (@origin[2] + @w/2.0)]
+    vertices << [(@origin[0] + @l/2.0), (@origin[1] + @h/2.0), (@origin[2] - @w/2.0)]
+    vertices << [(@origin[0] + @l/2.0), (@origin[1] - @h/2.0), (@origin[2] - @w/2.0)]
+    vertices << [(@origin[0] + @l/2.0), (@origin[1] - @h/2.0), (@origin[2] + @w/2.0)]
+    vertices << [(@origin[0] - @l/2.0), (@origin[1] - @h/2.0), (@origin[2] + @w/2.0)]
+    vertices << [(@origin[0] - @l/2.0), (@origin[1] - @h/2.0), (@origin[2] - @w/2.0)]
+    vertices << [(@origin[0] - @l/2.0), (@origin[1] + @h/2.0), (@origin[2] - @w/2.0)]
+    vertices << [(@origin[0] - @l/2.0), (@origin[1] + @h/2.0), (@origin[2] + @w/2.0)]
+
+    vertices
   end
 
   #returns true if the two cuboids intersect each other.  False otherwise.
