@@ -81,7 +81,7 @@ describe Cuboid do
     end
 
     it "does not rotate when impeded by a wall that did not original intersect with the cuboid" do
-      wall = Cuboid.new([3, 0, 0], 0.3, 5, 5)
+      wall = Cuboid.new([2.75, 0, 0], 0.5, 5, 5)
 
       expect(subject.rotate(:x, [wall])).to be false
     end
@@ -90,6 +90,5 @@ describe Cuboid do
       expect(subject.rotate(:x, [other_subject])).to be false
     end
   end
-
 
 end

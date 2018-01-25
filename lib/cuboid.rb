@@ -1,4 +1,3 @@
-
 class Cuboid
 
   # Only allow observer to see vertices, as the other
@@ -65,6 +64,72 @@ class Cuboid
 
   #END public methods that should be your starting point
 
+  # This method will rotate the cuboid. If the cuboid's rotation
+  # is impeded, the rotation will not happenand the function will return
+  # false. If the rotation occurs, the new vertices will be returned.
+  # The rotation will be at 90 degree intervals.
+  # Walls will be input as an array of other Cuboid objects.
+
+  # The manner that this method checks for impediments is a good
+  # approximation, but is not entirely accurate. This method simply
+  # expands the cuboid about the axis it is being rotated by its scalar
+  # distance from origin to appropriate vertex. It then checks to see if
+  # there are now any intersections at this larger size.  If not, then
+  # the box will be able to rotate smoothly.
+
+  # In order to correct this approximation, I could convert the coords
+  # of the box into spherical coordinates and call #intersection? at
+  # each deg of rotation.
+  def rotate(axis = :x, walls = [])
+
+    # check to see if there are already impedements
+    walls.each do |wall|
+      return false if self.intersects?(wall)
+    end
+
+    case axis
+    when :x
+      if !walls.empty?
+        dist = Math.sqrt((@h/2) ** 2 + (@w/2) ** 2)
+        temp = Cuboid.new(@origin, @l, dist, dist)
+
+        walls.each do |wall|
+          return false if temp.intersects?(wall)
+        end
+      end
+
+      rotate_x
+
+    when :y
+      if !walls.empty?
+        dist = Math.sqrt((@l/2) ** 2 + (@w/2) ** 2)
+        temp = Cuboid.new(@origin, dist, @h, dist)
+
+        walls.each do |wall|
+          return false if temp.intersects?(wall)
+        end
+      end
+
+      rotate_y
+
+    when :z
+      if !walls.empty?
+        dist = Math.sqrt((@h/2) ** 2 + (@l/2) ** 2)
+        temp = Cuboid.new(@origin, dist, dist, @w)
+
+        walls.each do |wall|
+          return false if temp.intersects?(wall)
+        end
+      end
+
+      rotate_z
+    else
+      raise ArgumentError, "Please use a symbol to identify the axis: :x, :y, or :z"
+    end
+
+    self.vertices
+  end
+
   private
 
   # Outputs incremented ranges for length, height, and width of a cuboid.
@@ -100,4 +165,18 @@ class Cuboid
 
     dims
   end
+
+  # helper methods to reassign vertices upon successful rotation
+  def rotate_x
+    @w, @h = @h, @w
+  end
+
+  def rotate_y
+    @w, @l = @l, @w
+  end
+
+  def rotate_z
+    @l, @w = @w, @l
+  end
+
 end
