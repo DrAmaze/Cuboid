@@ -7,6 +7,7 @@ describe Cuboid do
 
   subject { Cuboid.new([0,0,0], 5, 5, 5) }
   let(:other_subject) { Cuboid.new([1,1,1], 1, 1, 1)}
+  let(:cuboid) { Cuboid.new([3, 3, 3], 1, 5, 2)}
 
   describe "#initialize" do
     it "instantiates the cuboid at random origin" do
@@ -67,12 +68,10 @@ describe Cuboid do
       expect{ subject.rotate("i", []) }.to raise_error(ArgumentError, "Please use a symbol to identify the axis: :x, :y, or :z")
     end
 
-    context "using a non-cube object" do
-      it "rotates subject successfully when no walls are given" do
-        original_vertices = cuboid.vertices
-        cuboid.rotate
-        expect(cuboid.vertices).to_not eq(original_vertices)
-      end
+    it "rotates subject successfully when no walls are given" do
+      original_vertices = cuboid.vertices
+      cuboid.rotate
+      expect(cuboid.vertices).to_not eq(original_vertices)
     end
 
     it "successfully rotates when non-impeding walls are given" do
@@ -82,11 +81,15 @@ describe Cuboid do
     end
 
     it "does not rotate when impeded by a wall that did not original intersect with the cuboid" do
-      wall = Cuboid.new([])
+      wall = Cuboid.new([3, 0, 0], 0.3, 5, 5)
+
+      expect(subject.rotate(:x, [wall])).to be false
     end
 
     it "does not rotate if, prior to rotation, the cuboid already intersects with a wall" do
+      expect(subject.rotate(:x, [other_subject])).to be false
     end
   end
+
 
 end
