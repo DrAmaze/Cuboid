@@ -21,8 +21,6 @@ class Cuboid
     @w = width
   end
 
-  #BEGIN public methods that should be your starting point
-
   # Reassigns origin of cuboid. Returns new origin.
   def move_to!(x, y, z)
     @origin = [x, y, z]
@@ -61,8 +59,6 @@ class Cuboid
 
     intersection.value?([]) ? false : true
   end
-
-  #END public methods that should be your starting point
 
   # This method will rotate the cuboid. If the cuboid's rotation
   # is impeded, the rotation will not happenand the function will return
